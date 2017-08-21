@@ -1,0 +1,12 @@
+:file_search_pattern: '**/*.txt'
+:file_encoding: UTF-8
+:source_dir: english
+:target_dir: pt_br
+:source_language: en
+:target_language: pt_br
+:text_chunks_pattern: !ruby/regexp '/\{\d+\}\{.*\}\{([^}]+)\}/'
+:google_translate_api_key: change_me
+:constants:
+  :Elvis: Elvis Presley
+
+
