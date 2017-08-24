@@ -39,13 +39,22 @@ files.each_with_index do |file, i|
   original_phrases = File.read(file, encoding: conf[:file_encoding]).scan(conf[:text_chunks_pattern])
 
   original_phrases.each do |phrase|
-    phrases << phrase[0].gsub(constants, new_cons)
+    #tmp = coder.decode phrase[0]
+    tmp = phrase[0].force_encoding("windows-1251").encode(conf[:file_encoding], invalid: :replace, undef: :replace,  replace: ' ' )  
+    phrases << tmp.gsub(constants, new_cons)
   end
 
   raw_translations = []
+  returned_translation = []
 
-  puts phrases
-  returned_translation = translator.translate phrases, from: conf[:source_language], to: conf[:target_language]
+  #returned_translation << translator.translate(phrases.slice!(0..9), from: conf[:source_language], to: conf[:target_language]) until phrases.empty?
+  #returned_translation = translator.translate phrases, from: conf[:source_language], to: conf[:target_language]
+
+  until phrases.empty?  do
+    tmp = translator.translate(phrases.slice!(0..19), from: conf[:source_language], to: conf[:target_language])
+    puts tmp
+    returned_translation.concat tmp
+  end
 
   raw_translations.concat returned_translation if returned_translation.is_a?(Array)
   raw_translations << returned_translation unless returned_translation.is_a?(Array)

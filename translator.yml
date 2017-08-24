@@ -1,12 +1,17 @@
-:file_search_pattern: '**/*.txt'
-:file_encoding: UTF-8
+#:file_search_pattern: '/home/michel/workspace/fallout2-translator/translator/english/**/*.MSG'
+#:file_search_pattern: '/home/michel/workspace/fallout2-translator/translator/english/**/ACTEMVIL.MSG'
+:file_search_pattern: '/home/michel/workspace/fallout2-translator/translator/english/**/GCLENNY.MSG'
+
+
+#:file_search_pattern: '/home/michel/workspace/fallout2-ptbr/english/**/*.MSG'
+:file_encoding: ISO-8859-1
 :source_dir: english
 :target_dir: pt_br
 :source_language: en
 :target_language: pt_br
 :text_chunks_pattern: !ruby/regexp '/\{\d+\}\{.*\}\{([^}]+)\}/'
-:google_translate_api_key: change_me
+:google_translate_api_key: AIzaSyCTdLBNOdZ6bNLWKXIAtWvALi5xlNJao4A
 :constants:
-  :Elvis: Elvis Presley
-
-
+  Chosen One: Escolhido
+  Radscorpion: Radscorpion
+  brahmin: brahmin
