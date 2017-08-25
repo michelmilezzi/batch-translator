@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'yaml'
 require 'google/cloud/translate'
+require 'iconv'
 
 conf = YAML.load_file('translator.yml')
 
@@ -39,9 +40,13 @@ files.each_with_index do |file, i|
   original_phrases = File.read(file, encoding: conf[:file_encoding]).scan(conf[:text_chunks_pattern])
 
   original_phrases.each do |phrase|
-    #tmp = coder.decode phrase[0]
-    tmp = phrase[0].force_encoding("windows-1251").encode(conf[:file_encoding], invalid: :replace, undef: :replace,  replace: ' ' )  
-    phrases << tmp.gsub(constants, new_cons)
+    #encoded = phrase[0].encode!('UTF-8')
+    # -*- coding: utf-8 -*- #specify UTF-8 (unicode) characters
+    #encoded.gsub!(/[”“]/, '"')
+    #encoded.gsub!(/[‘’]/, "'")
+
+    encoded = phrase[0].force_encoding(conf[:file_encoding]).encode("utf-8", invalid: :replace, undef: :replace,  replace: ' ' )
+    phrases << encoded.gsub(constants, new_cons)
   end
 
   raw_translations = []
@@ -51,17 +56,24 @@ files.each_with_index do |file, i|
   #returned_translation = translator.translate phrases, from: conf[:source_language], to: conf[:target_language]
 
   until phrases.empty?  do
-    tmp = translator.translate(phrases.slice!(0..19), from: conf[:source_language], to: conf[:target_language])
-    puts tmp
+    tmp = translator.translate(phrases.slice!(0..19), from: conf[:source_language], to: conf[:target_language], format: :text)
     returned_translation.concat tmp
   end
 
-  raw_translations.concat returned_translation if returned_translation.is_a?(Array)
-  raw_translations << returned_translation unless returned_translation.is_a?(Array)
+  if returned_translation.is_a?(Array)
+    raw_translations.concat returned_translation
+  else
+    raw_translations << returned_translation
+  end     
 
   raw_translations.each_with_index do |raw_translation_object, j|
     raw_translation = raw_translation_object.text
-    raw_translation.encode!(conf[:file_encoding])
+
+    #raw_translation = Iconv.conv('windows-1251', 'UTF8', raw_translation_object.text)
+    #raw_translation.force_encoding( 'UTF-8' )
+    #raw_translation.encode!(conf[:file_encoding])
+    raw_translation.force_encoding("utf-8").encode!(conf[:file_encoding], invalid: :replace, undef: :replace,  replace: ' ' )
+    #raw_translation.encode!("windows-1251", "UTF-8")
     raw_translation.gsub!(%r{<span class="notranslate">|<\/span>}, '')
     puts "Traduzido:#{raw_translation}"
     target_file_content.gsub!(original_phrases[j][0], raw_translation)

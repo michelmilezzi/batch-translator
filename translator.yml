@@ -4,13 +4,13 @@
 
 
 #:file_search_pattern: '/home/michel/workspace/fallout2-ptbr/english/**/*.MSG'
-:file_encoding: ISO-8859-1
+:file_encoding: windows-1252
 :source_dir: english
 :target_dir: pt_br
 :source_language: en
 :target_language: pt_br
 :text_chunks_pattern: !ruby/regexp '/\{\d+\}\{.*\}\{([^}]+)\}/'
-:google_translate_api_key: AIzaSyCTdLBNOdZ6bNLWKXIAtWvALi5xlNJao4A
+:google_translate_api_key: S3cr3t
 :constants:
   Chosen One: Escolhido
   Radscorpion: Radscorpion
