@@ -61,10 +61,9 @@ files.each_with_index do |file, i|
 
   end
 
-
   raw_translations.each_with_index do |raw_translation_object, j|
     raw_translation = raw_translation_object.text
-    raw_translation.force_encoding("utf-8").encode!(conf[:file_encoding], invalid: :replace, undef: :replace,  replace: ' ' )
+    raw_translation.force_encoding('utf-8').encode!(conf[:file_encoding], invalid: :replace, undef: :replace,  replace: ' ' )
     raw_translation.gsub!(%r{<span class="notranslate">|<\/span>}, '')
     puts "Translated:#{raw_translation}"
     target_file_content.gsub!(original_phrases[j][0], raw_translation)
