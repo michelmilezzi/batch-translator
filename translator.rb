@@ -2,7 +2,7 @@ require 'fileutils'
 require 'yaml'
 require 'google/cloud/translate'
 
-conf = YAML.load_file('translator.yml')
+conf = YAML.load_file(ARGV[0].nil? ? 'translator.yml' : ARGV[0])
 
 # TODO: validate confs
 
